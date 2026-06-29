@@ -24,6 +24,8 @@ class User extends Authenticatable
         'phone',
         'nomor_identitas',
         'password',
+        'role',
+
     ];
 
     /**
@@ -47,5 +49,17 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function complaints() {
+        return $this->hasMany(Complaint::class, 'user_id');
+    }
+
+    public function assignedCompalaints() {
+        return $this->hasMany(Complaint::class, 'assigned_to');
+    }
+
+    public function compalintslogs() {
+        return $this->hasMany(ComplaintLog::class, 'actor_id');
     }
 }
