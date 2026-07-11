@@ -5,6 +5,7 @@ use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SystemLogController;
+use App\Http\Controllers\UserController;
 use App\Models\SystemLog;
 use Illuminate\Support\Facades\Route;
 
@@ -33,6 +34,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'role:admin,dev'])->group(function() {
     Route::resource('location', LocationController::class);
     Route::resource('categories', CategoryController::class);
+    Route::resource('users', UserController::class);
 });
 
 require __DIR__.'/auth.php';
