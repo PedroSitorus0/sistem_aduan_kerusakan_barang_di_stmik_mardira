@@ -27,6 +27,7 @@ class SystemLog extends Model
         'updated_at' => 'datetime',
         'status_code' => 'integer',
         'is_error' => 'boolean',
+        'context' => 'array',
     ];
 
     // Relasi ke User (nullable)

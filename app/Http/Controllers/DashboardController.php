@@ -17,7 +17,7 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
         $data = [];
-
+        
         if($user->role === 'user') {
             // total pengaduan yang dilakukan oleh user
             $data['total_complaints'] = Complaint::where('user_id', $user->id)->count();
