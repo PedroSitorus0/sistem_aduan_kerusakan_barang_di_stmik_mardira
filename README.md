@@ -1,59 +1,122 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Sistem Manajemen Pengaduan Fasilitas Kampus
+### STMIK Mardira Indonesia
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+---
 
-## About Laravel
+## Tujuan Inti Aplikasi
+Menyediakan platform terpusat bagi mahasiswa, dosen, dan pegawai untuk melaporkan kerusakan fasilitas kampus. Laporan akan dikelola oleh administrator, ditugaskan kepada teknisi, dan dipantau penyelesaiannya secara transparan. Developer berperan sebagai pengawas sistem tanpa intervensi operasional.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Pembagian Peran (Role)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+| Role        | Tanggung Jawab Utama                                                                 |
+|-------------|--------------------------------------------------------------------------------------|
+| **User**    | Melaporkan kerusakan, melihat status pengaduan sendiri                              |
+| **Admin**   | Mengelola semua pengaduan, menugaskan teknisi, mengelola data master (lokasi, kategori, pengguna) |
+| **Teknisi** | Menerima tugas, memperbarui progres perbaikan, menyelesaikan pengaduan              |
+| **Dev**     | Mengawasi sistem melalui `system_logs`, mengelola data master, **tidak bisa mengakses/mengelola teknisi** |
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## Alur Kerja Utama
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+1. **Pelapor (User)** mengajukan pengaduan via form → status `menunggu`.
+2. **Admin** meninjau laporan:
+   - Jika valid → ubah status ke `diproses` + tentukan teknisi (`assigned_to`).
+   - Jika tidak valid → ubah status ke `ditolak` + alasan di log.
+3. **Teknisi** melihat pengaduan yang ditugaskan, memberi catatan progres, dan menyelesaikan → status `selesai` + `resolved_at` tercatat.
+4. **Setiap perubahan status** dicatat di tabel `complaint_logs` (actor, status lama, status baru, pesan).
+5. **Dev** dapat melihat semua pengaduan & `system_logs`, tetapi tidak bisa melihat data teknisi atau menugaskan.
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Fitur Utama
 
-### Premium Partners
+### Semua Role
+- [x] Login/Register (multi-role)
+- [x] Notifikasi perubahan status
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### User (Pelapor)
+- [x] Membuat pengaduan (judul, deskripsi, kategori, lokasi, foto)
+- [x] Riwayat pengaduan pribadi
+- [x] Melihat log penanganan
 
-## Contributing
+### Admin
+- [x] Dashboard semua pengaduan (filter status)
+- [x] Ubah status & tugaskan teknisi
+- [x] CRUD data master (lokasi, kategori, user)
+- [x] Akses `complaint_logs`
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Teknisi
+- [x] Dashboard pengaduan khusus miliknya
+- [x] Kirim catatan progres (log_message)
+- [x] Menyelesaikan pengaduan
 
-## Code of Conduct
+### Dev
+- [x] Melihat semua pengaduan (tanpa akses assign teknisi)
+- [x] Mengelola data master (kecuali data teknisi)
+- [x] Akses penuh `system_logs`
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## Ringkasan Struktur Database
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+| Tabel              | Fungsi |
+|--------------------|--------|
+| `users`            | Autentikasi & identitas (role: user, admin, dev, teknisi) |
+| `locations`        | Data ruangan (kode unik: `R213`, `G07` → gedung diekstrak otomatis) |
+| `categories`       | Jenis kerusakan (listrik, AC, proyektor, dll) |
+| `complaints`       | Data utama pengaduan (relasi ke pelapor, lokasi, kategori, teknisi) |
+| `complaint_photos` | Multi-foto pengaduan |
+| `complaint_logs`   | Riwayat perubahan status (actor, old_status, new_status, pesan) |
+| `system_logs`      | Log error/warning/info untuk debugging dev |
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Teknologi
+
+- **Backend:** Laravel 12 + MySQL
+- **Frontend:** Blade + Tailwind CSS + Alpine.js
+- **Autentikasi:** Laravel Breeze
+- **Testing:** PHPUnit
+
+---
+
+## Milestone Pengerjaan
+
+| Tahap | Deskripsi | Status |
+|-------|-----------|--------|
+| **1. Setup** | Instalasi Laravel, Breeze, konfigurasi database | ✅ Selesai |
+| **2. Migrations** | Membuat 7 tabel sesuai skema | ✅ Selesai |
+| **3. Models** | Model + relasi Eloquent | ✅ Selesai |
+| **4. Controllers** | Controller per modul (User, Complaint, Admin, Teknisi, Dev) | 🔄 Saat Ini |
+| **5. Views** | Blade template (dashboard, form, notifikasi) | ⏳ Mendatang |
+| **6. Testing** | Unit & integration test | ⏳ Mendatang |
+| **7. Deployment** | Hosting + production setup | ⏳ Mendatang |
+
+---
+
+## Struktur Direktori Penting
+app/
+├── Models/
+│ ├── User.php
+│ ├── Location.php
+│ ├── Category.php
+│ ├── Complaint.php
+│ ├── ComplaintPhoto.php
+│ ├── ComplaintLog.php
+│ └── SystemLog.php
+├── Http/Controllers/
+│ ├── Auth/
+│ │ └── RegisteredUserController.php
+│ ├── DashboardController.php
+│ ├── ComplaintController.php
+│ ├── CategoryController.php
+│ ├── LocationController.php
+│ ├── UserManagementController.php
+│ └── SystemLogController.php
+
+---
+
+## Kontributor

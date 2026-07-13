@@ -8,18 +8,29 @@ return new class extends Migration
 {
     public function up(): void
     {
+        // HARUS menggunakan create() untuk membuat tabel baru
         Schema::create('system_logs', function (Blueprint $table) {
             $table->id();
-            $table->string('level', 50);
-            $table->text('message');
-            $table->string('action', 7);
-            $table->json('context')->nullable();
-            $table->timestamp('created_at')->nullable();
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');
+            $table->string('method', 10)->nullable();          
+            $table->string('url', 2048)->nullable();
+            $table->ipAddress('ip_address')->nullable();
+            $table->text('user_agent')->nullable();
+            $table->string('aksi', 100)->nullable();        
+            $table->integer('status_code')->nullable();
+            $table->string('exception_class')->nullable();
+            $table->text('exception_message')->nullable();
+            $table->longText('exception_trace')->nullable();
+            $table->boolean('is_error')->default(false);
+            $table->json('context')->nullable(); 
+            
+            $table->timestamps();
         });
     }
 
     public function down(): void
     {
+        // Cukup drop tabelnya jika di-rollback
         Schema::dropIfExists('system_logs');
     }
 };
