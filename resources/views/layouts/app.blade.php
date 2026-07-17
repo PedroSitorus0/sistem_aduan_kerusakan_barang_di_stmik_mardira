@@ -41,6 +41,8 @@
                 let table = new DataTable('#table');
             });
         </script>
+
         @stack('scripts')
+
     </body>
 </html>

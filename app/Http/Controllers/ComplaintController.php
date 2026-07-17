@@ -59,13 +59,19 @@ class ComplaintController extends Controller
             'category_id' => 'required|exists:categories,id',
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'photo_path' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'photo_path' => 'nullable|array',
+            'photo_path.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
+        $photoPaths = [];
+
         if ($request->hasFile('photo_path')) {
-            $validated['photo_path'] = $request->file('photo_path')->store('complaints', 'public');
+            foreach ($request->file('photo_path') as $file) {
+                $photoPaths[] = $file->store('complaints', 'public');
+            }
         }
-        
+        $validated['photo_path'] = !empty($photoPaths) ?  $photoPaths : null;
+
         $validated['user_id'] = Auth::id();
         $validated['status'] = 'menunggu';
 
@@ -76,7 +82,7 @@ class ComplaintController extends Controller
             'actor_id' => Auth::id(),
             'old_status' => null,
             'new_status' => 'menunggu',
-            'log_message' => 'Pengaduan dibuat oleh pelapor.',
+            'log_message' => 'Pengaduan dibuat oleh pelapor=' . Auth::user()->name,
         ]);
 
         return redirect()->route('complaints.show', $complaint->id)

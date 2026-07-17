@@ -26,6 +26,7 @@ class Complaint extends Model
 
     protected $casts = [
         'resolved_at' => 'datetime',
+        'photo_path' => 'array',
     ];
 
     public function user() {

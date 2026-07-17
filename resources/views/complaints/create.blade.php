@@ -95,16 +95,23 @@
 
                     <!-- Upload Foto -->
                     <div class="mb-6 bg-gray-50 p-4 rounded-lg border border-gray-200 border-dashed">
-                        <label for="photo_path" class="block text-sm font-medium text-gray-700 mb-2">Lampiran Foto <span class="text-xs text-gray-400 font-normal">(Opsional, Maksimal 2MB)</span></label>
-                        <input type="file" name="photo_path" id="photo_path" accept="image/jpeg, image/png, image/jpg, image/gif"
+                        <label for="photo_path" class="block text-sm font-medium text-gray-700 mb-2">Lampiran Foto <span class="text-xs text-gray-400 font-normal">(Opsional, Maksimal 2MB per file)</span></label>
+                        <input type="file" name="photo_path[]" id="photo_path" accept="image/*" multiple 
                                class="block w-full text-sm text-gray-500
                                       file:mr-4 file:py-2 file:px-4
                                       file:rounded file:border-0
                                       file:text-sm file:font-semibold
                                       file:bg-blue-50 file:text-blue-700
-                                      hover:file:bg-blue-100 cursor-pointer">
-                        <p class="text-xs text-gray-500 mt-2">Format yang diizinkan: JPG, JPEG, PNG, GIF.</p>
+                                      hover:file:bg-blue-100 cursor-pointer form-control">
+                        <p class="text-xs text-gray-500 mt-2">Format yang diizinkan: JPG, JPEG, PNG, GIF. Tahan tombol CTRL/Command saat memilih untuk upload lebih dari 1 foto.</p>
+                        
+                        <!-- Error untuk upload foto secara umum -->
                         @error('photo_path')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+
+                        <!-- Error untuk spesifik file di dalam array (jika ada yg gagal validasi) -->
+                        @error('photo_path.*')
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                         @enderror
                     </div>

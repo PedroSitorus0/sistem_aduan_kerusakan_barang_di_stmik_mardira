@@ -59,12 +59,20 @@
                         </div>
                     </div>
 
-                    @if($complaint->photo_path)
+                    <!-- PERUBAHAN ADA DI BAGIAN INI -->
+                    @if($complaint->photo_path && is_array($complaint->photo_path) && count($complaint->photo_path) > 0)
                         <div>
                             <p class="text-xs text-gray-500 uppercase font-semibold mb-2">Lampiran Foto</p>
-                            <img src="{{ asset('storage/' . $complaint->photo_path) }}" alt="Foto Aduan" class="max-w-full h-auto rounded border shadow-sm">
+                            <!-- Menggunakan grid agar rapi jika foto lebih dari 1 -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                @foreach($complaint->photo_path as $photo)
+                                    <img src="{{ asset('storage/' . $photo) }}" alt="Foto Aduan" class="w-full h-auto object-cover rounded border shadow-sm">
+                                @endforeach
+                            </div>
                         </div>
                     @endif
+                    <!-- AKHIR PERUBAHAN -->
+                    
                 </div>
             </div>
 
