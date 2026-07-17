@@ -31,7 +31,7 @@
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 mb-8">
                 <h4 class="text-sm font-bold text-gray-800 mb-4 uppercase tracking-wide">Filter & Pencarian</h4>
 
-                <form method="GET" action="{{ route('logs.index') }}">
+                <form method="GET" action="{{ route('system-logs.index') }}">
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-4">
                         
                         <div>
@@ -94,7 +94,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/></svg>
                             Terapkan Filter
                         </button>
-                        <a href="{{ route('logs.index') }}" class="bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-md text-sm font-semibold shadow-sm transition-colors">
+                        <a href="{{ route('system-logs.index') }}" class="bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-md text-sm font-semibold shadow-sm transition-colors">
                             Reset
                         </a>
                     </div>
@@ -105,7 +105,7 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                 <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                     <div class="text-sm font-medium text-gray-500 uppercase">Total Keseluruhan Logs</div>
-                    <div class="text-3xl font-bold text-gray-900 mt-1">{{ number_format($logs->total()) }}</div>
+                    <div class="text-3xl font-bold text-gray-900 mt-1">{{ number_format($logs->count()) }}</div>
                 </div>
                 <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                     <div class="text-sm font-medium text-gray-500 uppercase">Ditampilkan Saat Ini</div>
@@ -120,7 +120,7 @@
             <!-- Table -->
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-xl border border-gray-200">
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left text-gray-700 whitespace-nowrap">
+                    <table class="w-full text-sm text-left text-gray-700 whitespace-nowrap" id="table">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 border-b">
                             <tr>
                                 <th class="px-6 py-4">Pengguna</th>
@@ -184,13 +184,13 @@
                                     <td class="px-6 py-3 text-center">
                                         <div class="flex justify-center items-center gap-2">
                                             @if($log->is_error)
-                                                <a href="{{ route('logs.show', $log->id) }}" class="p-1.5 text-blue-600 hover:bg-blue-50 rounded" title="Lihat Detail Error">
+                                                <a href="{{ route('system-logs.show', $log->id) }}" class="p-1.5 text-blue-600 hover:bg-blue-50 rounded" title="Lihat Detail Error">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/></svg>
                                                 </a>
                                             @endif
                                             
                                             <!-- Tombol Hapus Log -->
-                                            <form action="{{ route('logs.destroy', $log->id) }}" method="POST" onsubmit="return confirm('Hapus log ini dari sistem?');">
+                                            <form action="{{ route('system-logs.destroy', $log->id) }}" method="POST" onsubmit="return confirm('Hapus log ini dari sistem?');">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="p-1.5 text-red-600 hover:bg-red-50 rounded" title="Hapus Log">
@@ -214,9 +214,9 @@
             </div>
 
             <!-- Pagination -->
-            <div class="mt-6">
+        {{-- <div class="mt-6">
                 {{ $logs->appends(request()->query())->links() }}
-            </div>
+            </div> --}}
 
         </div>
     </div>
