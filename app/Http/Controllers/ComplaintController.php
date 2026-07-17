@@ -82,7 +82,7 @@ class ComplaintController extends Controller
             'actor_id' => Auth::id(),
             'old_status' => null,
             'new_status' => 'menunggu',
-            'log_message' => 'Pengaduan dibuat oleh pelapor=' . Auth::user()->name,
+            'log_message' => 'Pengaduan dibuat oleh pelapor= ' . Auth::user()->name,
         ]);
 
         return redirect()->route('complaints.show', $complaint->id)

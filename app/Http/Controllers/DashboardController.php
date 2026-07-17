@@ -27,11 +27,11 @@ class DashboardController extends Controller
             $data['latest_complaints'] = Complaint::where('user_id', $user->id)->latest()->take(5)->get(['id', 'title', 'status', 'created_at']);
         } elseif ($user->role === 'teknisi') {
             // jumlah tugas yang diserahkan kepada teknisi
-            $data['total_assigned'] = Complaint::where('assigned_to', $user->id)->where('assigned_to', $user->id)->count();
+            $data['total_assigned'] = Complaint::where('assigned_to', $user->id)->count();
             // jumlah yang sudah dilesaikan
-            $data['in_progress'] = Complaint::where('assigned_to', $user->id)->where('status', 'selesai')->count();
+            $data['completed'] = Complaint::where('assigned_to', $user->id)->where('status', 'selesai')->count();
             // pengambilan tugas terbaru teratas
-            $data['in_progress'] = Complaint::where('assigned_to', $user->id)->where('assigned_to', $user->id)->where('status', 'diproses')->latest()->take(5)->get(['id', 'title', 'status', 'created_at']);
+            $data['latest_tasks'] = Complaint::where('assigned_to', $user->id)->where('assigned_to', $user->id)->where('status', 'diproses')->latest()->take(5)->get(['id', 'title', 'status', 'created_at']);
 
         } elseif ($user->role === 'admin') {
             // total semua pengaduan
@@ -49,6 +49,10 @@ class DashboardController extends Controller
 
             $data['latest_complaints'] = Complaint::with('user')->latest()->take(5)->get(['id', 'title', 'status', 'user_id', 'created_at']);
 
+            if ($user->role === 'admin') {
+                $data['total_technicians'] = User::where('role', 'teknisi')->count();
+            }
+
         } elseif ($user->role === 'dev') {
             // total semua pengaduan
             $data['total_complaints'] = Complaint::count();
@@ -61,6 +65,10 @@ class DashboardController extends Controller
             $data['total_errors'] = SystemLog::where('is_error', true)->count();
 
             $data['latest_complaints'] = Complaint::with('user')->latest()->take(5)->get(['id', 'title', 'status', 'user_id', 'created_at']);
+
+            if($user->role === 'admin') {
+                $data['total_errors'] = SystemLog::where('is_error', true)->count();
+            }
         }
         return view('dashboard', compact('data'));
     }

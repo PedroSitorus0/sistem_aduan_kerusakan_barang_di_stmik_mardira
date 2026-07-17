@@ -38,7 +38,7 @@
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                         @enderror
                     </div>
-
+                    
                     @if(Auth::user()->role === 'admin')
                         <div class="mb-4 bg-blue-50 p-4 rounded border border-blue-100">
                             <label for="assigned_to" class="block text-sm font-medium text-blue-900 mb-1">Tugaskan Kepada Teknisi <span class="text-xs text-blue-600 font-normal">(Wajib jika status "Diproses")</span></label>
