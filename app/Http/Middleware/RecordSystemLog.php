@@ -13,9 +13,15 @@ class RecordSystemLog
     {
         $response = $next($request);
 
-        if ($request->is('system-logs*') || $request->is('_debugbar*')) {
-            return $response;
+        // abaikan debugBar pada Asset
+        if($request->is('_debugBar*') || $request->is('build/*') || $request->is('assets/*')) {
+            return $next($request);
         }
+
+        if($request->is('system -logs*') && in_array($request->method(), ['POST', 'PUT', 'DETELE'])) {
+            return $next($request);
+        }
+
         $exception = null;
 
         try {
