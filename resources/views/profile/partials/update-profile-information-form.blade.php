@@ -24,6 +24,47 @@
         </div>
 
         <div>
+            <x-input-label for="phone" :value="__('Nomor Telepon')" />
+            <x-text-input id="phone" name="phone" type="text" class="mt-1 block w-full" :value="old('phone', $user->phone)" required autofocus autocomplete="phone" />
+            <x-input-error class="mt-2" :messages="$errors->get('phone')" />
+        </div>
+
+        <div>
+            <x-input-label for="nomor_identitas" :value="__('Nomor Identitas')" />
+            <x-text-input id="nomor_identitas" name="nomor_identitas" type="text" class="mt-1 block w-full" :value="old('nomor_identitas', $user->nomor_identitas)" required autofocus autocomplete="nomor_identitas" />
+            <x-input-error class="mt-2" :messages="$errors->get('nomor_identitas')" />
+        </div>
+
+        <div>
+            <div class="flex items-center gap-3 mb-1">
+                <x-input-label for="nomor_identitas" :value="__('Nomor Identitas')" class="mb-0" />
+                
+                {{-- Logika Badge Verifikasi --}}
+                @if ($user->nomor_identitas)
+                    @if ($user->is_verified)
+                        <span class="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-800">
+                            <svg class="h-3 w-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" /></svg>
+                            Terverifikasi
+                        </span>
+                    @else
+                        <span class="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-800">
+                            <svg class="h-3 w-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a.75.75 0 01.75.75v4.5a.75.75 0 01-1.5 0v-4.5A.75.75 0 0110 5zm0 10a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" /></svg>
+                            Menunggu Verifikasi Admin
+                        </span>
+                    @endif
+                @endif
+            </div>
+
+            <x-text-input id="nomor_identitas" name="nomor_identitas" type="text" class="mt-1 block w-full bg-gray-50" :value="old('nomor_identitas', $user->nomor_identitas)" required autocomplete="nomor_identitas" />
+            
+            @if ($user->is_verified)
+                <p class="mt-1 text-xs text-amber-600">Peringatan: Mengubah nomor identitas akan membatalkan status verifikasi Anda.</p>
+            @endif
+            
+            <x-input-error class="mt-2" :messages="$errors->get('nomor_identitas')" />
+        </div>
+
+        <div>
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
             <x-input-error class="mt-2" :messages="$errors->get('email')" />

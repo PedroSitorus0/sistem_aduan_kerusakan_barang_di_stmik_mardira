@@ -17,6 +17,7 @@ class UserSeeder extends Seeder
     {
         $users = [
             ['name' => 'Pedro Armando Sitorus', 'email' => 'pedrositorus0@gmail.com', 'role' => 'dev'],
+            ['name' => 'admin 1', 'email' => 'admin1@gmail.com', 'role' => 'admin'],
             ['name' => 'Teknisi STMIK', 'email' => 'teknisi@stmik-mi.ac.id', 'role' => 'teknisi'],
             ['name' => 'Test User', 'email' => 'example@gmail.com', 'role'=> 'user'],
 

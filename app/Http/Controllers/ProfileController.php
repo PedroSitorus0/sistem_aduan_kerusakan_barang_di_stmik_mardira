@@ -32,6 +32,12 @@ class ProfileController extends Controller
             $request->user()->email_verified_at = null;
         }
 
+        if ($request->user()->isDirty('nomor_identitas')) {
+            $request->user()->is_verified = false;
+            $request->user()->verified_by = null;
+            $request->user()->verified_at = null;
+        }
+
         $request->user()->save();
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
