@@ -11,7 +11,7 @@
             </div>
 
             <div class="flex gap-2">
-                <a href="#" class="bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-md text-sm font-medium shadow-sm transition-colors">
+                <a href="{{ route('system-logs.export') }}" class="bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2 rounded-md text-sm font-medium shadow-sm transition-colors">
                     ↓ Export CSV
                 </a>
             </div>

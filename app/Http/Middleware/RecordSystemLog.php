@@ -16,12 +16,17 @@ class RecordSystemLog
         if ($request->is('system-logs*') || $request->is('_debugbar*')) {
             return $response;
         }
+        $exception = null;
+
+        try {
+            $statusCode = $response->getStatusCode();
+            $exception = $response->exception ?? null;
+        } catch (\Throwable $th) {
+            $exception = $th;
+            $statusCode = 500;
+        }
 
         $aksi = $request->route() ? $request->route()->getName() : 'unknown_route';
-        $statusCode = $response->getStatusCode();
-
-        // 1. Ambil semua data input (GET/POST payload)
-        // Kita menggunakan except() agar password tidak ikut tersimpan di log (demi keamanan)
         $payload = $request->except(['password', 'password_confirmation', '_token']);
 
         // 2. Siapkan array context
@@ -40,12 +45,18 @@ class RecordSystemLog
             'user_agent'      => $request->userAgent(),
             'aksi'            => $aksi,
             'status_code'     => $statusCode,
-            'is_error'        => $statusCode >= 400,
-            
+            'is_error'        => $statusCode >= 400 || $exception !== null,
+            'exception_class' => $exception ? get_class($exception) : null,
+            'exception_message' => $exception ? $exception->getMessage() : null,
+            'exception_trace' => $exception ? $exception->getTraceAsString() : null,
             // 3. Simpan sebagai JSON
             // Jika array context kosong, simpan null agar database lebih bersih
             'context'         => !empty($contextData) ? json_encode($contextData) : null,
         ]);
+
+        if (isset($th)) {
+            throw $th;
+        }
 
         return $response;
     }
