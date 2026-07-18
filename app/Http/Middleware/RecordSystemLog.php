@@ -13,15 +13,10 @@ class RecordSystemLog
     {
         $response = $next($request);
 
-        // abaikan debugBar pada Asset
-        if($request->is('_debugBar*') || $request->is('build/*') || $request->is('assets/*')) {
-            return $next($request);
+        // jika request berawalan dari url system-logs maka akan diabaikan.
+        if ($request->is('system-logs*') || $request->is('_debugbar*')) {
+            return $response;
         }
-
-        if($request->is('system -logs*') && in_array($request->method(), ['POST', 'PUT', 'DETELE'])) {
-            return $next($request);
-        }
-
         $exception = null;
 
         try {
