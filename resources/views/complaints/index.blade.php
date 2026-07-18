@@ -4,9 +4,14 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Daftar Pengaduan Kerusakan') }}
             </h2>
-            @if(Auth::user()->role === 'user')
-                <a href="{{ route('complaints.create') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow">
-                    + Buat Pengaduan Baru
+                    @if(Auth::user()->role === 'user')
+                <a href="{{ route('complaints.create') }}" 
+                class="group inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-2.5 px-4 rounded-xl shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 ease-out tracking-wide">
+                    <!-- Ikon Plus yang berputar sedikit saat di-hover -->
+                    <svg class="w-4 h-4 transform group-hover:rotate-90 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    <span>Buat Pengaduan Baru</span>
                 </a>
             @endif
         </div>
@@ -64,23 +69,35 @@
                                 <td class="px-6 py-4 text-center text-xs">
                                     {{ $complaint->created_at->format('d M Y') }}
                                 </td>
-                                <td class="px-6 py-4 text-center">
-                                    <div class="flex justify-center items-center gap-2">
-                                        <a href="{{ route('complaints.show', $complaint->id) }}" class="px-3 py-1 bg-teal-500 hover:bg-teal-600 text-white rounded text-xs transition-colors">Detail</a>
-                                        
-                                        @if(in_array(Auth::user()->role, ['admin', 'dev', 'teknisi']))
-                                            <a href="{{ route('complaints.edit', $complaint->id) }}" class="px-3 py-1 bg-amber-500 hover:bg-amber-600 text-white rounded text-xs transition-colors">Proses</a>
-                                        @endif
+                               <td class="px-6 py-4 text-center">
+    <div class="flex justify-center items-center gap-2">
+        <!-- Tombol Detail (Teal Modern) -->
+        <a href="{{ route('complaints.show', $complaint->id) }}" 
+           class="inline-flex items-center text-xs font-bold text-white bg-teal-500 hover:bg-teal-600 px-3 py-1.5 rounded-lg shadow-sm hover:shadow hover:-translate-y-0.5 transition-all duration-200 ease-out">
+            Detail
+        </a>
+        
+        <!-- Tombol Proses (Amber/Oren Modern) -->
+        @if(in_array(Auth::user()->role, ['admin', 'dev', 'teknisi']))
+            <a href="{{ route('complaints.edit', $complaint->id) }}" 
+               class="inline-flex items-center text-xs font-bold text-white bg-amber-500 hover:bg-amber-600 px-3 py-1.5 rounded-lg shadow-sm hover:shadow hover:-translate-y-0.5 transition-all duration-200 ease-out">
+                Proses
+            </a>
+        @endif
 
-                                        @if(in_array(Auth::user()->role, ['admin', 'dev']))
-                                            <form action="{{ route('complaints.destroy', $complaint->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Yakin ingin menghapus data pengaduan ini?');">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded text-xs transition-colors">Hapus</button>
-                                            </form>
-                                        @endif
-                                    </div>
-                                </td>
+        <!-- Tombol Hapus (Red/Merah Modern) -->
+        @if(in_array(Auth::user()->role, ['admin', 'dev']))
+            <form action="{{ route('complaints.destroy', $complaint->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Yakin ingin menghapus data pengaduan ini?');">
+                @csrf
+                @method('DELETE')
+                <button type="submit" 
+                        class="inline-flex items-center text-xs font-bold text-white bg-red-500 hover:bg-red-600 px-3 py-1.5 rounded-lg shadow-sm hover:shadow hover:-translate-y-0.5 transition-all duration-200 ease-out cursor-pointer">
+                    Hapus
+                </button>
+            </form>
+        @endif
+    </div>
+</td>
                             </tr>
                         @endforeach
                     </tbody>

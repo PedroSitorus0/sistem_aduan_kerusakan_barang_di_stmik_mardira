@@ -4,9 +4,14 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Detail Pengaduan: ') }} <span class="text-blue-600">#{{ $complaint->id }}</span>
             </h2>
-            <a href="{{ route('complaints.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded shadow">
-                Kembali
-            </a>
+            <a href="{{ route('complaints.index') }}" 
+   class="group inline-flex items-center gap-1.5 text-xs font-bold text-gray-600 bg-white border border-gray-200 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 px-4 py-2.5 rounded-xl shadow-xs hover:shadow-sm hover:-translate-y-0.5 transition-all duration-200 ease-out tracking-wide">
+    <!-- Ikon Panah Kembali yang bergeser ke kiri saat di-hover -->
+    <svg class="w-4 h-4 transform group-hover:-translate-x-0.5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+    </svg>
+    <span>Kembali</span>
+</a>
         </div>
     </x-slot>
 
@@ -99,13 +104,19 @@
                         @endforelse
                     </div>
 
-                    @if(in_array(Auth::user()->role, ['admin', 'dev', 'teknisi']) && $complaint->status !== 'selesai')
-                        <div class="mt-6 pt-4 border-t">
-                            <a href="{{ route('complaints.edit', $complaint->id) }}" class="block w-full text-center bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded shadow transition-colors">
-                                Proses / Update Status
-                            </a>
-                        </div>
-                    @endif
+       @if(in_array(Auth::user()->role, ['admin', 'dev', 'teknisi']) && $complaint->status !== 'selesai')
+    <div class="mt-6 pt-4 border-t border-gray-100">
+        <a href="{{ route('complaints.edit', $complaint->id) }}" 
+           class="group flex items-center justify-center gap-2 w-full text-center bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold py-3 px-4 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 ease-out tracking-wide">
+            <span>Proses / Update Status</span>
+            
+            <!-- Ikon Panah Interaktif yang bergerak ke kanan saat di-hover -->
+            <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+            </svg>
+        </a>
+    </div>
+@endif
                 </div>
             </div>
 
