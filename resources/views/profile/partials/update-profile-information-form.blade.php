@@ -25,15 +25,15 @@
 
         <div>
             <x-input-label for="phone" :value="__('Nomor Telepon')" />
-            <x-text-input id="phone" name="phone" type="text" class="mt-1 block w-full" :value="old('phone', $user->phone)" required autofocus autocomplete="phone" />
+            <x-text-input id="phone" name="phone" type="text" class="mt-1 block w-full" :value="old('phone', $user->phone)" autofocus autocomplete="phone" />
             <x-input-error class="mt-2" :messages="$errors->get('phone')" />
         </div>
 
-        <div>
+        {{-- <div>
             <x-input-label for="nomor_identitas" :value="__('Nomor Identitas')" />
             <x-text-input id="nomor_identitas" name="nomor_identitas" type="text" class="mt-1 block w-full" :value="old('nomor_identitas', $user->nomor_identitas)" required autofocus autocomplete="nomor_identitas" />
             <x-input-error class="mt-2" :messages="$errors->get('nomor_identitas')" />
-        </div>
+        </div> --}}
 
         <div>
             <div class="flex items-center gap-3 mb-1">

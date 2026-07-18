@@ -9,6 +9,7 @@ use App\Models\Location;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\ComplaintStatusUpdated;
 
 class ComplaintController extends Controller
 {
@@ -165,7 +166,24 @@ class ComplaintController extends Controller
             'new_status' => $newStatus,
             'log_message' => $validated['log_message'],
         ]);
-
+        
+        // if ($oldStatus !== $newStatus) {
+            if ($complaint->user) {
+                $complaint->user->notify(new ComplaintStatusUpdated(
+                    $complaint,
+                    $oldStatus,
+                    $newStatus,
+                    
+                    // [MODIFIKASI] Menggunakan $validated['log_message'] 
+                    // Alasan: Sama seperti saat melakukan ComplaintLog::create, kita
+                    // pastikan pesan yang masuk ke email juga sudah steril.
+                    $validated['log_message']
+                ));
+            } else {
+                return('maaf sepertinya ada yang salah');
+            //}
+        
+        }
         return redirect()->route('complaints.show', $complaint->id)
             ->with('success', 'Status pengaduan berhasil diperbarui.');
     }
