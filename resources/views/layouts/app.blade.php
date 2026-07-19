@@ -12,7 +12,7 @@
         <link rel="stylesheet" href="https://cdn.datatables.net/2.3.8/css/dataTables.dataTables.min.css">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
-        <link rel="icon" type="image/x-icon" href="{{ asset('images/myistri.jpg') }}">
+        <link rel="icon" type="image/x-icon" href="{{ asset('images/Logo STMIK Mardira Indonesia.ico') }}">
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
