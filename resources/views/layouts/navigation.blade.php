@@ -38,9 +38,7 @@
                 
                 <div class="relative">
                     <button @click="openProfile = !openProfile" @click.outside="openProfile = false" type="button" class="flex items-center focus:outline-none focus:ring-4 focus:ring-gray-100 rounded-full transition-all">
-                        @if(Auth::user()->foto)
-                            <img class="w-9 h-9 rounded-full object-cover border border-gray-200 shadow-sm" src="{{ asset('storage/' . Auth::user()->foto) }}" alt="{{ Auth::user()->name }}">
-                        @else
+                        @if(Auth::user())
                             <div class="w-9 h-9 rounded-full bg-[#E63912] flex items-center justify-center text-white font-bold text-sm shadow-sm border border-red-200">
                                 {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                             </div>
