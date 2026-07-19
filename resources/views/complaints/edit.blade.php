@@ -4,9 +4,14 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Proses Pengaduan: ') }} <span class="text-blue-600">#{{ $complaint->id }}</span>
             </h2>
-            <a href="{{ route('complaints.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded shadow">
-                Batal
-            </a>
+           <a href="{{ route('complaints.index') }}" 
+   class="group inline-flex items-center justify-center gap-1.5 text-xs font-bold text-gray-500 bg-white border border-gray-200 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-600 px-5 py-3 rounded-xl shadow-xs hover:shadow-sm hover:-translate-y-0.5 transition-all duration-200 ease-out tracking-wide">
+    <!-- Ikon Silang (X) yang berputar sedikit saat di-hover -->
+    <svg class="w-3.5 h-3.5 transform group-hover:rotate-90 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+    </svg>
+    <span>Batal</span>
+</a>
         </div>
     </x-slot>
 
@@ -65,9 +70,15 @@
                     </div>
 
                     <div class="flex justify-end">
-                        <button type="submit" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-6 rounded shadow">
-                            Simpan Perubahan Status
-                        </button>
+                       <button type="submit" 
+                            class="group inline-flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold py-3 px-6 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 ease-out tracking-wide cursor-pointer">
+                        <span>Simpan Perubahan Status</span>
+                        
+                        <!-- Ikon Centang Interaktif yang sedikit membesar saat di-hover -->
+                        <svg class="w-4 h-4 transform group-hover:scale-110 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                        </svg>
+                    </button>
                     </div>
                 </form>
 
