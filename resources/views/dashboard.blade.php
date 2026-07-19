@@ -290,7 +290,7 @@
                     <p class="text-xs font-bold text-red-600 uppercase tracking-wider">System Error Logs</p>
                     <p class="text-4xl font-black text-red-900 mt-2 tracking-tight">{{ $data['total_errors'] }}</p>
                 </div>
-                <a href="#" class="text-xs font-medium text-red-600 bg-red-50 hover:bg-red-100 px-4 py-2 rounded-md transition-colors shadow-2xs font-bold">
+                <a href="{{ route('system-logs.index') }}" class="text-xs font-medium text-red-600 bg-red-50 hover:bg-red-100 px-4 py-2 rounded-md transition-colors shadow-2xs font-bold">
                     Periksa Logs
                 </a>
             </div>
