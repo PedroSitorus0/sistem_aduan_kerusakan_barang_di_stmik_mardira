@@ -1,0 +1,43 @@
+sequenceDiagram
+    autonumber
+
+    %% ================================
+    %% Definisi Aktor & Partisipan (MVC)
+    %% ================================
+    actor User as Pelapor (User)
+    participant View as View (Blade Form)
+    participant Controller as ComplaintController
+    participant Model as Model: Complaint
+    participant PhotoModel as Model: ComplaintPhoto
+
+    %% ================================
+    %% Alur Pengiriman Form Pengaduan
+    %% ================================
+    User->>View: Mengisi form (Judul, Lokasi, dll) & klik "Kirim"
+    View->>Controller: POST /complaints (data form & file foto)
+    activate Controller
+
+    Note right of Controller: Validasi input (Request->validate)
+
+    alt Validasi Gagal
+        Controller-->>View: redirect()->back() dengan session errors
+        View-->>User: Tampilkan pesan error (merah) pada form
+    else Validasi Berhasil
+        Controller->>Model: Complaint::create([data])
+        activate Model
+        Model-->>Controller: Return objek $complaint (dengan ID baru)
+        deactivate Model
+
+        opt Lampiran Foto Tersedia
+            Note right of Controller: Simpan file ke Storage (folder public)
+            Controller->>PhotoModel: ComplaintPhoto::create([complaint_id, path])
+            activate PhotoModel
+            PhotoModel-->>Controller: Return success
+            deactivate PhotoModel
+        end
+
+        Controller-->>View: redirect() ke Daftar Pengaduan + flash message success
+        View-->>User: Tampilkan notifikasi "Berhasil Disimpan"
+    end
+
+    deactivate Controller

@@ -1,0 +1,54 @@
+flowchart TD
+    %% Definisi Style
+    classDef statusMenunggu fill:#facc15,stroke:#ca8a04,color:#000
+    classDef statusDiproses fill:#60a5fa,stroke:#2563eb,color:#fff
+    classDef statusSelesai fill:#4ade80,stroke:#16a34a,color:#000
+    classDef statusDitolak fill:#f87171,stroke:#dc2626,color:#fff
+    classDef logs fill:#e5e7eb,stroke:#4b5563,color:#000
+
+    subgraph Pelapor [1. Pelapor - Mahasiswa / Dosen / Pegawai]
+        A(Login / Daftar Akun) --> B(Buat Pengaduan)
+        B --> C[Input: Judul, Detail, Kategori, Lokasi, Foto]
+    end
+
+    subgraph Sistem [2. Sistem & Database]
+        C --> D([Status: MENUNGGU]):::statusMenunggu
+        
+        %% Pencatatan Log
+        D -.-> L1[(complaint_logs)]:::logs
+        G([Status: DITOLAK]):::statusDitolak -.-> L1
+        H([Status: DIPROSES]):::statusDiproses -.-> L1
+        J([Status: SELESAI]):::statusSelesai -.-> L1
+        
+        %% Notifikasi
+        G -.-> N1((Kirim Notifikasi email))
+        J -.-> N2((Kirim Notifikasi email))
+
+        %% Log Sistem
+        SysError(Aktivitas HTTP / Error / Exception) -.-> L2[(system_logs)]:::logs
+    end
+
+    subgraph Admin [3. Administrator]
+        D --> E{Pemeriksaan Validitas}
+        E -- Tidak Layak --> G
+        E -- Valid & Layak --> H
+        H --> I[Assign / Tugaskan Teknisi]
+    end
+
+    subgraph TeknisiA [4. Teknisi]
+        I --> T1(Lihat Aduan Khusus Dirinya)
+        T1 --> T2(Proses Perbaikan & Catat Pesan Log)
+        T2 --> J
+    end
+
+    subgraph Dev [5. Developer]
+        Master(Kelola Data Master: Lokasi R/G & Kategori)
+        
+        %% Akses Dev ke Status
+        D -. "Akses Ubah Status" .-> DevCek{Ubah Status spt Admin}
+        DevCek -.-> G
+        DevCek -.-> H
+        
+        %% Akses Dev ke Log
+        L2 --> Monitor(Debugging, Analisis Celah & Pantau Kesehatan Sistem)
+    end

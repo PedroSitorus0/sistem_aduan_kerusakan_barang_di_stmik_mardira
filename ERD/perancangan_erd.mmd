@@ -1,0 +1,106 @@
+erDiagram
+    users {
+        bigint(20)_unsigned id PK
+        varchar(50) name
+        varchar(50) email
+        varchar(30) phone
+        varchar(255) nomor_identitas
+        tinyint(1) is_verified
+        bigint(20)_unsigned verified_by FK
+        timestamp verified_at
+        timestamp email_verified_at
+        varchar(255) password
+        enum role
+        varchar(100) remember_token
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    locations {
+        bigint(20)_unsigned id PK
+        varchar(25) room_name
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    categories {
+        bigint(20)_unsigned id PK
+        varchar(50) name
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    complaints {
+        bigint(20)_unsigned id PK
+        varchar(50) kode_barang
+        bigint(20)_unsigned user_id FK
+        bigint(20)_unsigned location_id FK
+        bigint(20)_unsigned category_id FK
+        varchar(255) title
+        text description
+        varchar(255) photo_path
+        enum status
+        bigint(20)_unsigned assigned_to FK
+        timestamp resolved_at
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    complaint_photos {
+        bigint(20)_unsigned id PK
+        bigint(20)_unsigned complaint_id FK
+        varchar(255) photo_path
+        timestamp created_at
+    }
+
+    complaint_logs {
+        bigint(20)_unsigned id PK
+        bigint(20)_unsigned complaint_id FK
+        bigint(20)_unsigned actor_id FK
+        varchar(50) old_status
+        varchar(50) new_status
+        text log_message
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    system_logs {
+        bigint(20)_unsigned id PK
+        bigint(20)_unsigned user_id FK
+        varchar(10) method
+        varchar(2048) url
+        varchar(45) ip_address
+        text user_agent
+        varchar(100) aksi
+        int(11) status_code
+        varchar(255) exception_class
+        text exception_message
+        longtext exception_trace
+        tinyint(1) is_error
+        longtext context
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    sessions {
+        varchar(255) id PK
+        bigint(20)_unsigned user_id FK
+        varchar(45) ip_address
+        text user_agent
+        longtext payload
+        int(11) last_activity
+    }
+
+    %% Relasi antar tabel (One-to-Many)
+    users ||--o{ complaints : "membuat (user_id)"
+    users ||--o{ complaints : "ditugaskan (assigned_to)"
+    locations ||--o{ complaints : "memiliki (location_id)"
+    categories ||--o{ complaints : "memiliki (category_id)"
+    
+    complaints ||--o{ complaint_photos : "melampirkan (complaint_id)"
+    complaints ||--o{ complaint_logs : "dicatat di (complaint_id)"
+    
+    users ||--o{ complaint_logs : "dilakukan oleh (actor_id)"
+    users ||--o{ system_logs : "terekam di (user_id)"
+    users ||--o{ sessions : "memiliki (user_id)"
+    users ||--o{ users : "diverifikasi oleh (verified_by)"

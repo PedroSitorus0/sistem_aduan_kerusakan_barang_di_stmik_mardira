@@ -1,0 +1,92 @@
+classDiagram
+    direction TB
+
+    class User {
+        +BigInt id
+        +String name
+        +String email
+        +String password
+        +String nomor_identitas
+        +Enum role
+        +Boolean is_verified
+        +complaints()
+        +assignedComplaints()
+        +complaintLogs()
+        +verifier()
+    }
+
+    class Location {
+        +BigInt id
+        +String room_name
+        +complaints()
+        +getBuildingNameAttribute()
+    }
+
+    class Category {
+        +BigInt id
+        +String name
+        +complaints()
+    }
+
+    class Complaint {
+        +BigInt id
+        +String title
+        +Text description
+        +String photo_path
+        +Enum status
+        +Timestamp resolved_at
+        +user()
+        +location()
+        +category()
+        +assignedTechnician()
+        +photos()
+        +logs()
+    }
+
+    class ComplaintPhoto {
+        +BigInt id
+        +String photo_path
+        +Timestamp created_at
+        +complaint()
+    }
+
+    class ComplaintLog {
+        +BigInt id
+        +String old_status
+        +String new_status
+        +Text log_message
+        +complaint()
+        +actor()
+    }
+
+    class SystemLog {
+        +BigInt id
+        +String method
+        +String url
+        +String ip_address
+        +Text exception_message
+        +Boolean is_error
+        +user()
+        +scopeByDateRange()
+        +scopeByUser()
+        +scopeByMethod()
+        +scopeByAction()
+        +scopeByErrorsOnly()
+        +scopeByStatusCode()
+        +getMethodBadgeClass()
+        +getStatusLabelAttribute()
+    }
+
+    %% Relasi antar Class (Eloquent Relationships)
+    %% Penanda: "1" (One), "0..*" (Zero to Many)
+
+    User "1" --> "0..*" Complaint : hasMany (user_id)
+    User "1" --> "0..*" Complaint : hasMany (assigned_to)
+    User "1" --> "0..*" ComplaintLog : hasMany (actor_id)
+    User "1" --> "0..*" SystemLog : hasMany (user_id)
+    
+    Location "1" --> "0..*" Complaint : hasMany
+    Category "1" --> "0..*" Complaint : hasMany
+    
+    Complaint "1" --> "0..*" ComplaintPhoto : hasMany
+    Complaint "1" --> "0..*" ComplaintLog : hasMany
