@@ -4,9 +4,14 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Buat Pengaduan Baru') }}
             </h2>
-            <a href="{{ route('complaints.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded shadow transition-colors">
-                Kembali
-            </a>
+           <a href="{{ route('complaints.index') }}" 
+   class="group inline-flex items-center gap-1.5 text-xs font-bold text-gray-600 bg-white border border-gray-200 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 px-4 py-2.5 rounded-xl shadow-xs hover:shadow-sm hover:-translate-y-0.5 transition-all duration-200 ease-out tracking-wide">
+    <!-- Ikon Panah Kembali yang bergeser ke kiri saat di-hover -->
+    <svg class="w-4 h-4 transform group-hover:-translate-x-0.5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+    </svg>
+    <span>Kembali</span>
+</a>
         </div>
     </x-slot>
 
@@ -118,9 +123,15 @@
 
                     <!-- Tombol Aksi -->
                     <div class="flex justify-end pt-4 border-t">
-                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded shadow transition-colors">
-                            Kirim Pengaduan
-                        </button>
+                       <button type="submit" 
+        class="group inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-3 px-6 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 ease-out tracking-wide cursor-pointer">
+    <span>Kirim Pengaduan</span>
+    
+    <!-- Ikon Pesawat Kertas yang terbang/miring sedikit ke kanan-atas saat di-hover -->
+    <svg class="w-4 h-4 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+    </svg>
+</button>
                     </div>
                 </form>
 
