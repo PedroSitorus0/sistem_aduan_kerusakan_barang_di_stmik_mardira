@@ -20,7 +20,7 @@
                 Total Pengaduan Saya
             </p>
             <div class="flex justify-between items-end mt-4">
-                <p class="text-4xl font-extrabold text-gray-900 tracking-tight">{{ $data['total_complaints'] }}</p>
+                <p class="text-4xl font-extrabold text-gray-900 tracking-tight">{{ $data['total_complaints'] }}</p> 
                 <span class="text-xs font-medium text-gray-400 group-hover:text-gray-600 flex items-center gap-1 transition-colors duration-200">
                     Lihat Semua 
                     <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -137,7 +137,7 @@
                             @forelse($logs as $log)
                                 <tr class="border-b transition-colors {{ $log->is_error ? 'bg-red-50/50 hover:bg-red-50' : 'hover:bg-gray-50' }}">
                                     <td class="px-6 py-3">
-                                        <div class="font-bold text-gray-900">{{ $log->user->name ?? 'Sistem / Guest' }}</div>
+                                        <div class="font-bold text-gray-900">{{ $log->user->name ?? 'Guest' }}</div>
                                         <div class="font-mono text-gray-500 text-xs">{{ $log->user->email ?? '-' }}</div>
                                     </td>
                                     <td class="px-6 py-3">

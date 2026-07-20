@@ -137,14 +137,6 @@ class UserController extends Controller
             unset($data['password']);
         }
 
-        // Password hanya diupdate jika diisi
-        // if (empty($validated['password'])) {
-        //     unset($validated['password']);
-        // } else {
-        //     $validated['password'] = Hash::make($validated['password']);
-        // }
-
-        // $user->update($validated);
         $user->update($data);
 
         return redirect()->route('users.index')
